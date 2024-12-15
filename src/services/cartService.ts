@@ -1,3 +1,4 @@
+import { ExitStatus } from "typescript";
 import { cartModel } from "../models/cartModel";
 import productModel from "../models/productModel";
 
@@ -13,7 +14,6 @@ const createCartForUser = async ({userId}: createCartForUser)=>{
 interface GetActiveCarForUser{
     userId: string;
 }    
-
 
 export const getActiveCartForUser =async ({
         userId,
@@ -54,9 +54,11 @@ export const addItemToCart =async ({
     if (!product){
         return {data: "Item already exists in cart !", statusCode:400 };
     }
+
     if(product.stock< quantity ){
         return {data: "Low Stock for item" , statusCode: 400}
     }
+
     cart.items.push({
         product: productId, 
         unitPrice: product.price, 
@@ -68,4 +70,58 @@ export const addItemToCart =async ({
     const updatedCart =await cart.save();
 
     return{ data: updatedCart, statusCode:200 };
+};
+
+
+
+interface UpdateItemInCart{
+    productId: any ;
+    quantity : number; 
+    userId: string;
+}
+
+export const updateItemInCart = async({
+    productId,
+    quantity , 
+    userId,
+}:UpdateItemInCart) =>{
+    const cart = await getActiveCartForUser({ userId });
+
+    const existInCart=(await cart).items.find(
+        (p) => p.product.toString() === productId
+    );
+
+    if (!existInCart){
+        return {data: "Item does not exist  in cart !", statusCode:404 };
+    }
+
+    const product =await productModel.findById(productId);
+    
+    if (!product){
+        return {data: "Product not found", statusCode:400 };
+    }
+
+    if(product.stock< quantity ){
+        return {data: "Low Stock for item" , statusCode: 400}
+    }
+
+
+    const otherCartItems = cart.items.filter((p) => p.product.toString() !== productId);
+
+
+    console.log(otherCartItems);
+    let total =otherCartItems.reduce((sum,product) => {
+        sum+=product.quantity * product.unitPrice;
+        return sum;
+    },0)
+
+    existInCart.quantity =quantity;
+    total +=existInCart.quantity * existInCart.unitPrice;
+
+
+    cart.totalAmount=total;
+    
+    const updatedCart=await cart.save();
+    return {data: updatedCart, statusCode:200 };
+  
 };
