@@ -4,11 +4,10 @@ import { IProduct } from "./productModel";
 
 const CartStatusEnum = ["active", "completed"]
 
-export interface ICartItem extends Document{
+export interface ICartItem {
     product:IProduct
     unitPrice: number;
     quantity: number;
-
 }
 export interface ICart extends Document{
     userId: ObjectId | string ;
