@@ -1,10 +1,12 @@
 import Container from "@mui/material/Container";
 import ProductCard from "../components/ProductCard";
-import Grid from "@mui/material/Grid";
 import { useEffect, useState } from "react";
 import type { Product } from "../types/Product";
 import { BASE_URL } from "../constants/baseUrl";
-import { Box } from "@mui/system";
+import Box  from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
+
+
 
 const HomePage = () => {
  const [products, setProducts]= useState<Product[]>([]);
@@ -27,11 +29,11 @@ const HomePage = () => {
   return <Box>Something Went Wrong , please try again </Box>
  }
   return (
-    <Container sx={{ mt: 4 }}>
+    <Container sx={{ mt: 2 }}>
       <Grid container spacing={2}>
-        {products.map(({_id, title , image , price})=>(
-        <Grid>
-          <ProductCard _id={_id} title={title} image={image} price={price} />
+        {products.map( ({_id, title , image , price}) => (
+          <Grid >
+            <ProductCard _id={_id} title={title} image={image} price={price} />
           </Grid>
         ))}
       </Grid>
