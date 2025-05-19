@@ -8,7 +8,7 @@ import { useAuth } from "../context/Auth/AuthContext";
 const CartPage =()=>{
     const {token }=useAuth();
     const [cart, setCart]= useState();
-    const [error, setError]= useState('');
+    const [, setError]= useState('');
     
 
     useEffect(()=>{
@@ -23,7 +23,7 @@ const CartPage =()=>{
                 },
             });
             if (!response.ok){
-                setError("failed to fetch user cart, please try again ");
+                setError("failed to fetch user cart, please try again ", );
             }
             const data =await response.json();
             setCart (data);
