@@ -34,6 +34,10 @@ router.delete("/", validateJWT, async (req: ExtendRequest, res) => {
 
 router.post("/items", validateJWT, async (req: ExtendRequest, res) => {
   try {
+    const userId =req?.user?._id;
+    const {productId, quantity}=req.body;
+    const response =await addItemToCart({userId, productId, quantity});
+    res.status(200).send(response.data);
   } catch (err: any) {
     res.status(500).send("something went wrong ");
   }

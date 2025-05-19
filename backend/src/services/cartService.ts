@@ -21,6 +21,7 @@ export const getActiveCartForUser = async ({ userId,
   populateProduct
  }: GetActiveCarForUser) => {
   let cart ;
+
   if (populateProduct){
     cart = await cartModel.findOne({ userId, status: "active" }).populate('items.product');
   }else{
@@ -59,10 +60,11 @@ export const addItemToCart = async ({
   quantity,
   userId,
 }: AddItemToCart) => {
+
   const cart = await getActiveCartForUser({ userId });
 
   //does the item exist in the cart ?
-  const existInCart = (await cart).items.find(
+  const existInCart = (cart).items.find(
     (p) => p.product.toString() === productId
   );
 
@@ -87,7 +89,6 @@ export const addItemToCart = async ({
   });
   //Update the total amount for the cart
   cart.totalAmount += product.price * quantity;
-
   await cart.save();
 
   return { data: await getActiveCartForUser({userId, populateProduct: true}), statusCode: 200 };

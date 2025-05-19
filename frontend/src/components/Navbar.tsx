@@ -50,7 +50,9 @@ return (
       <Container maxWidth="xl">
         <Toolbar disableGutters>
         <Box sx={{display:"flex", flexDirection:"row",justifyContent:"space-between", width: "100%"}}>
+        <Button variant='text' sx={{color: '#ffffff'}} onClick={()=>navigate('/')}>  
         <Box sx={{display: "flex", flexDirection:"row", alignItems:"center"}}>
+      
           <AdbIcon sx={{ display: {  display: 'flex' }, mr: 1 }} />
           <Typography
             variant="h6"
@@ -66,6 +68,7 @@ return (
             Tech Hub
           </Typography>
           </Box>
+          </Button>
           <Box gap={4} display="flex"  flexDirection="row"  alignItems="center" justifyContent="center" >
               <IconButton onClick={handleCart}>
               <ShoppingCart sx={{color:"#ffffff"}}  /> 
