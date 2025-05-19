@@ -15,7 +15,6 @@ import { useAuth } from '../context/Auth/AuthContext';
 import Grid from '@mui/material/Grid';
 import { Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import Badge from '@mui/icons-material/Badge';
 
 
 function Navbar() {
