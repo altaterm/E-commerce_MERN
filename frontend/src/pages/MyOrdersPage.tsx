@@ -1,4 +1,4 @@
-import { Button, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import Container from "@mui/system/Container";
 import { useEffect } from "react";
 import { useAuth } from "../context/Auth/AuthContext";
