@@ -71,11 +71,11 @@ router.delete(
 
 router.post("/checkout", validateJWT, async (req: ExtendRequest, res) => {
   try {
-    const userId = req.user?._id;
+    const userId = req?.user?._id;
     const { address } = req.body;
     const response = await checkout({ userId, address });
     res.status(response.statusCode).send(response.data);
-  } catch (err: any) {
+  } catch {
     res.status(500).send("something went wrong ");
   }
 });
