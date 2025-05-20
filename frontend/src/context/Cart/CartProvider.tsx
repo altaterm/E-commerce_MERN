@@ -26,9 +26,18 @@ const CartProvider: FC<PropsWithChildren> = ({ children }) => {
                 setError("failed to fetch user cart, please try again ", );
             }
             const cart =await response.json();
-            const cartItemsMapped = cart.items.map(({product, quantity}: {product: any ; quantity : number})=>({productId: product._id, title: product.title, image : product.image, quantity, unitPrice: product.unitPrice,}))
+            const cartItemsMapped = cart.items.map(
+              ({product, quantity, unitPrice}: {product: any ; quantity : number; unitPrice: number })=>({
+                productId: product._id, 
+                title: product.title, 
+                image : product.image, 
+                quantity, 
+                unitPrice,
+              })
+            );
 
             setCartItems(cartItemsMapped);
+            setTotalAmount(cart.totalAmount);
         };
         fetchCart();
     }, [token]);
@@ -56,13 +65,16 @@ const CartProvider: FC<PropsWithChildren> = ({ children }) => {
         setError('failed to parse cart data');
       }
 
-      const cartItemsMapped = cart.items.map(({product, quantity}: {product: any ; quantity : number}) => ({
+      const cartItemsMapped = cart.items.map(
+        ({product, quantity, unitPrice}: {product: any ; quantity : number; unitPrice: number}) => ({
         productId: product._id, 
         title: product.title, 
         image : product.image, 
+        unitPrice,
         quantity, 
-        unitPrice: product.unitPrice,
-    }));
+        
+    })
+  );
 
 
       setCartItems([...cartItemsMapped] );
