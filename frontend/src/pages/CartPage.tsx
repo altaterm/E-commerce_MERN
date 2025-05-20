@@ -4,10 +4,11 @@ import { useCart } from "../context/Cart/CartContext";
 import Box from "@mui/system/Box";
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
+import { useNavigate } from "react-router-dom";
 
 const CartPage =()=>{
-    const {cartItems, totalAmount, updateItemInCart, removeItemInCart}= useCart(); 
-
+    const {cartItems, totalAmount, updateItemInCart, removeItemInCart, clearCart}= useCart(); 
+    const navigate =useNavigate();
     const handleQuantity =(productId:string, quantity: number)=>{
         if (quantity <= 0 ){
             return; 
@@ -17,10 +18,13 @@ const CartPage =()=>{
     const handleRemoveItemFromCart =(productId: string)=>{
         removeItemInCart(productId);
     }
-    return( 
-    <Container fixed sx={{mt: 2}}>
-        <Typography variant="h4">My cart </Typography>
-        <Box  display="flex" flexDirection="column" gap={4}>
+
+    const handleCheckout =()=>{
+        navigate('/checkout');
+    }
+    const renderCartItems =()=>{
+        return (
+<Box  display="flex" flexDirection="column" gap={4}>
         {cartItems.map((item)=>(
             <Box 
             display="flex" 
@@ -50,10 +54,25 @@ const CartPage =()=>{
                     </ButtonGroup>
             </Box>
         ))}
-        <Box>
+        <Box display="flex" flexDirection="row" justifyContent="space-between">
             <Typography variant="h4">Total Amount : {totalAmount}</Typography>
+            <Button variant="contained" onClick={()=>handleCheckout()}>Go To Checkout</Button>
         </Box>
     </Box>
+   ) }
+    return( 
+    <Container fixed sx={{mt: 2}}>
+        <Box display="flex" 
+            flexDirection="row" 
+            justifyContent="space-between"  sx={{marginBottom: 4}}>
+            <Typography variant="h4">My cart </Typography>
+            <Button onClick={()=> clearCart()}>Clear Cart</Button>
+        </Box>
+       {cartItems.length? ( 
+        renderCartItems()
+       ) : (
+        <Typography>Cart is empty. Please Start Shopping and add items   </ Typography>
+    ) } 
     </Container>
     );
 };

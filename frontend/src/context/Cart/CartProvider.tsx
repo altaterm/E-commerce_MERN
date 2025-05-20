@@ -166,9 +166,38 @@ const CartProvider: FC<PropsWithChildren> = ({ children }) => {
     console.error(productId);
 }
 
-  };
+};
+
+const clearCart = async()=>{
+      try {
+      const response = await fetch(`${BASE_URL}/cart`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization:`Bearer ${token}`,
+        },
+      });
+      if(!response.ok){
+        setError('failes to delete  cart ');
+      }
+
+      const cart =await response.json();
+      if(! cart){
+        setError('failed to parse cart data');
+      }
+
+
+      setCartItems([] );
+      setTotalAmount(0);
+    } catch (error) {
+    console.error(error);
+}
+
+};
+
+
   return (
-    <CartContext.Provider value={{ cartItems, totalAmount, addItemToCart, updateItemInCart, removeItemInCart }}>
+    <CartContext.Provider value={{ cartItems, totalAmount, addItemToCart, updateItemInCart, removeItemInCart, clearCart }}>
       {children}
     </CartContext.Provider>
   );
